@@ -1,0 +1,52 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Infirmier" as Infirmier
+actor "Médecin Généraliste" as Generaliste
+actor "Médecin Spécialiste" as Specialiste
+
+package "Système de Télé-Expertise Médicale" {
+    
+    ' Cas d'utilisation Infirmier
+    usecase "Enregistrer un patient" as UC1
+    usecase "Saisir les constantes vitales" as UC2
+    usecase "Mettre en file d'attente" as UC3
+    
+    ' Cas d'utilisation Médecin Généraliste
+    usecase "Consulter la file d'attente" as UC4
+    usecase "Créer une consultation" as UC5
+    usecase "Gérer la prise en charge directe\n(Ordonnance & Clôture)" as UC6
+    usecase "Demander un avis spécialiste\n(Télé-expertise)" as UC7
+    usecase "Filtrer et trier les spécialistes" as UC8
+    usecase "Réserver un créneau" as UC9
+    
+    ' Cas d'utilisation Médecin Spécialiste
+    usecase "Gérer les disponibilités (Créneaux)" as UC10
+    usecase "Consulter les demandes d'expertise" as UC11
+    usecase "Consulter le dossier patient" as UC12
+    usecase "Répondre à la demande" as UC13
+}
+
+' Relations Infirmier
+Infirmier --> UC1
+Infirmier --> UC2
+Infirmier --> UC3
+
+' Relations Généraliste
+Generaliste --> UC4
+Generaliste --> UC5
+Generaliste --> UC6
+Generaliste --> UC7
+
+' Les inclusions pour la demande d'expertise
+UC7 ..> UC8 : <<include>>
+UC7 ..> UC9 : <<include>>
+
+' Relations Spécialiste
+Specialiste --> UC10
+Specialiste --> UC11
+Specialiste --> UC12
+Specialiste --> UC13
+
+@enduml
