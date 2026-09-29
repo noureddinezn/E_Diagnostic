@@ -1,0 +1,106 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' Définition des Enums
+enum Role {
+  INFIRMIER
+  GENERALISTE
+  SPECIALISTE
+}
+
+enum StatutConsultation {
+  EN_FILE_ATTENTE
+  EN_COURS
+  EN_ATTENTE_AVIS_SPECIALISTE
+  TERMINEE
+}
+
+enum Priorite {
+  URGENTE
+  NORMALE
+  NON_URGENTE
+}
+
+enum TypeExpertise {
+  SYNCHRONE
+  ASYNCHRONE
+}
+
+enum StatutCreneau {
+  DISPONIBLE
+  RESERVE
+  PASSE
+}
+
+' Définition des Classes (Entities)
+class Utilisateur {
+  - id : Long
+  - nom : String
+  - prenom : String
+  - email : String
+  - motDePasse : String
+  - role : Role
+  - specialite : String
+  - tarifConsultation : Double
+}
+
+class Patient {
+  - id : Long
+  - nom : String
+  - prenom : String
+  - numSecuriteSociale : String
+  - mutuelle : String
+  - antecedents : String
+  - allergies : String
+  - traitementsEnCours : String
+}
+
+class Consultation {
+  - id : Long
+  - dateCreation : LocalDateTime
+  - tensionArterielle : String
+  - frequenceCardiaque : Integer
+  - temperature : Double
+  - frequenceRespiratoire : Integer
+  - poids : Double
+  - taille : Double
+  - symptomes : String
+  - examenClinique : String
+  - diagnostic : String
+  - statut : StatutConsultation
+}
+
+class Ordonnance {
+  - id : Long
+  - datePrescription : LocalDateTime
+  - medicaments : String
+}
+
+class CreneauHoraire {
+  - id : Long
+  - dateHeureDebut : LocalDateTime
+  - dateHeureFin : LocalDateTime
+  - statut : StatutCreneau
+}
+
+class DemandeExpertise {
+  - id : Long
+  - question : String
+  - priorite : Priorite
+  - typeExpertise : TypeExpertise
+  - dateDemande : LocalDateTime
+  - avisSpecialiste : String
+  - dateReponse : LocalDateTime
+}
+
+' Relations entre les classes
+Patient "1" -- "*" Consultation : Concerne
+Utilisateur "1" -- "*" Consultation : Crée (Généraliste) >
+Consultation "1" -- "0..1" Ordonnance : Génère >
+Consultation "1" -- "0..1" DemandeExpertise : Nécessite >
+Utilisateur "1" -- "*" CreneauHoraire : Définit (Spécialiste) >
+Utilisateur "1" -- "*" DemandeExpertise : Reçoit (Spécialiste) >
+DemandeExpertise "1" -- "1" CreneauHoraire : Planifiée sur >
+
+@enduml
