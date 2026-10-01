@@ -14,7 +14,7 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: expertise
+      DB_NAME: E_Diagnostic_serv
       DB_USER: postgres
       DB_PASSWORD: postgres
 
@@ -24,11 +24,11 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: expertise
+      POSTGRES_DB: E_Diagnostic_serv
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d expertise"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d E_Diagnostic_serv"]
       interval: 5s
       timeout: 5s
       retries: 10
